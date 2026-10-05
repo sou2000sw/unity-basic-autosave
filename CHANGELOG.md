@@ -1,0 +1,15 @@
+# Changelog
+
+All notable changes to the Basic Auto Save package will be documented in this file.
+
+## [0.1.0] - 2026-10-05
+
+### Added
+- 初版リリース (Basic Auto Save 0.1.0)。
+- `ScriptableSingleton` によるプロジェクトローカル設定 (`UserSettings/BasicAutoSaveSettings.asset`)。
+- `InitializeOnLoad` によるバックグラウンドタイマー更新 (`BasicAutoSaveService`)。
+- UI Toolkit による設定・ステータスウィンドウ (`BasicAutoSaveWindow`)。
+- コンパイル中、アセット更新中、プレイモード中、プレハブステージ中の一時停止ガード機能。
+- 名前なし（未保存）シーンのダイアログなしスキップとステータス警告機能。
+- `AssetDatabase.SaveAssets()` によるアセット単体変更の保存対応。
+- バッチ検証用スモークテスト (`SmokeTests.Run` および `SmokeTests.VerifyRestart`)。

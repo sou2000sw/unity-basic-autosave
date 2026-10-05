@@ -1,0 +1,11 @@
+{
+  "name": "com.local.basic-autosave",
+  "version": "0.1.0",
+  "displayName": "Basic Auto Save",
+  "description": "Simple Unity Editor auto-save UPM package for scenes and dirty persistent assets.",
+  "unity": "2022.3",
+  "license": "MIT",
+  "author": {
+    "name": "Local"
+  }
+}

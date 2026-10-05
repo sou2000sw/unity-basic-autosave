@@ -1,0 +1,45 @@
+.window-container {
+    padding: 10px;
+}
+
+.title-label {
+    font-size: 16px;
+    -unity-font-style: bold;
+    margin-bottom: 10px;
+}
+
+.help-box {
+    margin-bottom: 10px;
+}
+
+.control-group {
+    margin-bottom: 10px;
+}
+
+.action-button {
+    height: 30px;
+    margin-bottom: 15px;
+}
+
+.status-group {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.status-header {
+    -unity-font-style: bold;
+    margin-bottom: 5px;
+}
+
+.warning-label {
+    color: #e66737;
+    margin-top: 5px;
+}
+
+.last-pass-label {
+    margin-top: 2px;
+}
+
+Label {
+    white-space: normal;
+}
