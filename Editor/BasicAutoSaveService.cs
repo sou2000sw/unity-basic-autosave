@@ -323,10 +323,17 @@ namespace BasicAutoSave
             var settings = BasicAutoSaveSettings.instance;
             foreach (var obj in objects)
             {
-                if (obj == null || obj == settings) continue;
-                if (EditorUtility.IsPersistent(obj) && EditorUtility.IsDirty(obj))
+                if (obj == null || obj == settings || obj is AssetImporter) continue;
+                if (EditorUtility.IsPersistent(obj) && EditorUtility.IsDirty(obj) && AssetDatabase.IsNativeAsset(obj))
                 {
                     string path = AssetDatabase.GetAssetPath(obj);
+                    if (path.StartsWith("Packages/", StringComparison.Ordinal))
+                    {
+                        var package = UnityEditor.PackageManager.PackageInfo.FindForAssetPath(path);
+                        if (package == null ||
+                            (package.source != UnityEditor.PackageManager.PackageSource.Embedded &&
+                             package.source != UnityEditor.PackageManager.PackageSource.Local)) continue;
+                    }
                     if (!string.IsNullOrEmpty(path) && (path.StartsWith("Assets/") || path.StartsWith("Packages/")))
                     {
                         list.Add(obj);

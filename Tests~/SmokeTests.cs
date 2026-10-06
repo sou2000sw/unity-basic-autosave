@@ -67,6 +67,7 @@ namespace BasicAutoSave.Tests
                 RunTest("5. Settings interval clamp and persistence", Test5_SettingsIntervalClampAndPersist);
                 RunTest("6. UI CreateGUI opens successfully", Test6_UICreateGUI);
                 RunTest("7. Save-rejected dirty asset failure handling", Test7_SaveRejectedDirtyAssetHandling);
+                RunTest("9. Imported shader and importer excluded from save failure", Test9_ImportedObjects);
                 RunTest("8. Service init setup for restart test", Test8_ServiceInitSetupForRestart);
 
                 WriteTestReport();
@@ -389,6 +390,23 @@ namespace BasicAutoSave.Tests
         {
             BasicAutoSaveService.Configure(true, 5);
             Assert(BasicAutoSaveService.IsEnabled, "Service must be enabled at end of Run for VerifyRestart test");
+        }
+
+        private static void Test9_ImportedObjects()
+        {
+            const string shaderPath = "Assets/BasicAutoSaveTests/Imported.shader";
+            Directory.CreateDirectory("Assets/BasicAutoSaveTests");
+            File.WriteAllText(shaderPath, "Shader \"Hidden/BasicAutoSaveRegression\" { SubShader { Pass {} } }");
+            AssetDatabase.ImportAsset(shaderPath);
+            var shader = AssetDatabase.LoadAssetAtPath<Shader>(shaderPath);
+            var importer = AssetImporter.GetAtPath(shaderPath);
+            Assert(shader != null && importer != null, "Imported test objects missing");
+            EditorUtility.SetDirty(shader);
+            EditorUtility.SetDirty(importer);
+            var method = typeof(BasicAutoSaveService).GetMethod("GetDirtyPersistentAssets", BindingFlags.NonPublic | BindingFlags.Static);
+            var assets = (List<UnityEngine.Object>)method.Invoke(null, null);
+            Assert(!assets.Contains(shader) && !assets.Contains(importer), "Imported objects must not report SaveAssets failure");
+            AssetDatabase.DeleteAsset(shaderPath);
         }
 
         private static void WriteTestReport()

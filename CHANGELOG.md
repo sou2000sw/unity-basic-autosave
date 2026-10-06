@@ -2,6 +2,11 @@
 
 All notable changes to the Basic Auto Save package will be documented in this file.
 
+## [0.1.1] - 2026-10-07
+
+### Fixed
+- 読み取り専用UPMパッケージ、インポート済みシェーダー・プラグイン、AssetImporterを保存失敗の判定対象から除外。通常のScene/Asset保存は維持。
+
 ## [0.1.0] - 2026-10-05
 
 ### Added
