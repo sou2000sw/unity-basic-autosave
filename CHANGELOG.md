@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2 - 2026-10-08
+- VCC User Packages向けローカルVPM配布を追加。保存処理は0.1.1と同じ。
+
+# Changelog
+
 All notable changes to the Basic Auto Save package will be documented in this file.
 
 ## [0.1.1] - 2026-10-07
