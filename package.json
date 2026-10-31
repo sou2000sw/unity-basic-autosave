@@ -1,6 +1,6 @@
 {
   "name": "com.sou2000sw.basic-autosave",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "displayName": "Basic Auto Save",
   "description": "Unity Editor auto-save for scenes and assets. No VRChat SDK dependency.",
   "unity": "2022.3",
