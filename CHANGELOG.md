@@ -2,6 +2,7 @@
 
 ## 0.1.2 - 2026-10-08
 - VCC User Packages向けローカルVPM配布を追加。保存処理は0.1.1と同じ。
+- 公開にあわせてパッケージ名を `com.sou2000sw.basic-autosave` に変更（旧 `com.local.basic-autosave`）。VPMリポジトリ（GitHub Pages）から配布。
 
 # Changelog
 

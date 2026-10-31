@@ -14,6 +14,13 @@
 # Test reports and temporary test output
 test-report.json
 
+# Local distribution builds and private install notes (not published)
+*.zip
+*.zip.meta
+*.tgz
+*.tgz.meta
+Unityオートセーブ_*
+
 # OS generated files
 .DS_Store
 Thumbs.db

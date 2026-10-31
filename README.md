@@ -11,6 +11,17 @@ Basic Auto Save は、Unity 2022.3 以降の Editor 向けの通常保存自動�
 - **バックグラウンド稼働**: 設定ウィンドウを開いていなくても `[InitializeOnLoad]` により常時稼働します。
 
 ## インストール方法
+
+### VCC（VRChat Creator Companion）から導入（推奨）
+1. 次のリンクを開くと、VCC にこのツールのリポジトリが追加されます。
+   `vcc://vpm/addRepo?url=https://sou2000sw.github.io/unity-basic-autosave/index.json`
+   （開けない場合は VCC の **Settings → Packages → Add Repository** に `https://sou2000sw.github.io/unity-basic-autosave/index.json` を貼り付けます）
+2. VCC の **Projects → Manage Project** で **Basic Auto Save** の **＋** を押します。以後の更新も VCC に表示されます。
+
+### ZIP から導入
+[Releases](https://github.com/sou2000sw/unity-basic-autosave/releases) の ZIP を展開し、`package.json` が入っているフォルダを VCC の **Settings → Packages → User Packages → Add** で登録するか、Unity の Package Manager で `Add package from disk...` から `package.json` を指定します。登録したフォルダは消さずに残してください。
+
+### Package Manager から導入
 Package Manager (`Window > Package Manager`) を開き、左上の `+` ボタンからインストールします。
 
 - **ローカルフォルダから導入**: `Add package from disk...` を選択し、本パッケージの `package.json` を指定します。

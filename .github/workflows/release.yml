@@ -1,0 +1,35 @@
+name: Release
+
+# Push a tag v<version> matching package.json to publish a release zip.
+# The Listing workflow then rebuilds index.json for VCC.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check tag matches package.json
+        run: |
+          name=$(jq -r .name package.json)
+          version=$(jq -r .version package.json)
+          if [ "$GITHUB_REF_NAME" != "v$version" ]; then
+            echo "::error::tag $GITHUB_REF_NAME does not match package.json version $version"
+            exit 1
+          fi
+          echo "ZIP=$name-$version.zip" >> "$GITHUB_ENV"
+
+      # package.json sits at the zip root, as VPM expects
+      - name: Build package zip
+        run: git archive --format=zip -o "$ZIP" HEAD
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" "$ZIP" package.json --title "$GITHUB_REF_NAME" --generate-notes

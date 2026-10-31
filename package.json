@@ -1,12 +1,13 @@
 {
-  "name": "com.local.basic-autosave",
+  "name": "com.sou2000sw.basic-autosave",
   "version": "0.1.2",
   "displayName": "Basic Auto Save",
-  "description": "Unity Editor auto-save for scenes and assets. Local VCC User Package; no VRChat SDK dependency.",
+  "description": "Unity Editor auto-save for scenes and assets. No VRChat SDK dependency.",
   "unity": "2022.3",
   "license": "MIT",
   "author": {
-    "name": "Local"
+    "name": "sou2000sw",
+    "url": "https://github.com/sou2000sw"
   },
   "vpmDependencies": {}
 }

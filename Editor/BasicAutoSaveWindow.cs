@@ -31,7 +31,7 @@ namespace BasicAutoSave
             root.Clear();
             root.AddToClassList("window-container");
 
-            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Packages/com.local.basic-autosave/Editor/BasicAutoSave.uss");
+            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Packages/com.sou2000sw.basic-autosave/Editor/BasicAutoSave.uss");
             if (styleSheet == null)
             {
                 styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Editor/BasicAutoSave.uss");
