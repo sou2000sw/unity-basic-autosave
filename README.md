@@ -1,6 +1,9 @@
-# Basic Auto Save 0.1.0
+# Basic Auto Save
 
-Basic Auto Save は、Unity 2022.3 以降の Editor 向けの通常保存自動化パッケージです。初期版 0.1.0 の実機検証は Unity 2022.3.22f1 で行っています。
+Basic Auto Save は、Unity 2022.3 以降の Editor 向けの通常保存自動化パッケージです。変更のあったシーンとアセットを一定の間隔で上書き保存し、保存し忘れたまま Unity が落ちて作業が消えることを防ぎます。VRChat SDK には依存していません。
+
+- **動作確認**: Windows / Unity 2022.3.22f1。VRChat SDK（Avatars 3.10.5）・Modular Avatar・NDMF・Avatar Optimizer を入れたアバタープロジェクトで確認し、VCC 2.4.2 と ALCOM からの導入も確認しています。Unity 6 は未確認です。
+- **バージョンごとの変更**: [CHANGELOG.md](CHANGELOG.md)
 
 ## 主な機能
 - **定期的な自動保存**: 1〜30分（デフォルト5分）の間隔で変更のあったシーンおよびアセットを自動保存します。
