@@ -1,6 +1,6 @@
 # Basic Auto Save
 
-Basic Auto Save は、Unity 2022.3 以降の Editor 向けの通常保存自動化パッケージです。変更のあったシーンとアセットを一定の間隔で上書き保存し、保存し忘れたまま Unity が落ちて作業が消えることを防ぎます。VRChat SDK には依存していません。
+Basic Auto Save は、Unity 2022.3 以降の Editor 向けの通常保存自動化パッケージです。変更のあったシーンとアセットを一定の間隔で上書き保存し、保存し忘れたまま Unity が落ちたときに失う作業を、最後の自動保存以降のぶんに抑えます。VRChat SDK には依存していません。
 
 - **動作確認**: Windows / Unity 2022.3.22f1。VRChat SDK（Avatars 3.10.5）・Modular Avatar・NDMF・Avatar Optimizer を入れたアバタープロジェクトで確認し、VCC 2.4.2 と ALCOM からの導入も確認しています。Unity 6 は未確認です。
 - **バージョンごとの変更**: [CHANGELOG.md](CHANGELOG.md)
@@ -28,7 +28,6 @@ Basic Auto Save は、Unity 2022.3 以降の Editor 向けの通常保存自動�
 Package Manager (`Window > Package Manager`) を開き、左上の `+` ボタンからインストールします。
 
 - **ローカルフォルダから導入**: `Add package from disk...` を選択し、本パッケージの `package.json` を指定します。
-- **tarball (.tgz) から導入**: `Add package from tarball...` を選択し、ビルドされた `.tgz` ファイルを指定します。
 
 ※インストールの完了後、メニューバーに `Tools > Basic Auto Save` が追加されます。
 
@@ -59,6 +58,8 @@ Unity 公式の保存 API を、Editor の更新ループで動くタイマー�
 - **`AssetDatabase.SaveAssets()` の制約**: サードパーティ製の `OnWillSaveAssets` フックやファイル権限（読み取り専用）によって書き込みが拒否された場合、アセットがダーティなまま残り、保存失敗としてエラーログが出力されます。
 
 ## 検証方法（Verification Harness）
+開発者向けです。テストは [GitHub のリポジトリ](https://github.com/sou2000sw/unity-basic-autosave) の `Tests~/` にあり、配布している ZIP や VCC から入れたパッケージには含まれていません。
+
 以下のテストは使い捨ての検証用プロジェクトだけで実行してください。テスト用Sceneへ切り替え、`Assets/BasicAutoSaveSmoke`を作成・削除します。制作中のプロジェクトでは実行しないでください。
 
 Unity の仕様上 `Tests~` フォルダ内の C# スクリプトはアセットデータベースから除外されます。バッチモード検証を行う際は、あらかじめ `Tests~/SmokeTests.cs` をプロジェクトの `Assets/Editor/SmokeTests.cs` へコピーしてください。

@@ -1,5 +1,11 @@
 # Changelog
 
+All notable changes to the Basic Auto Save package will be documented in this file.
+
+## 0.1.5 - 2026-11-01
+- 文書のみ更新。READMEの効果の説明を言い切らない表現に直し、配布していない `.tgz` の導入手順を削除し、テストがZIPに含まれないことを明記。CHANGELOGの見出しの重複と0.1.2の配布方法の記述を修正。保存処理は0.1.3と同じ。
+- 配布用ワークフローの `actions/checkout` で認証情報を残さないようにした（`persist-credentials: false`）。配布物の中身には影響しない。
+
 ## 0.1.4 - 2026-11-01
 - READMEのみ更新（見出しから古いバージョン番号を外し、動作確認した環境と仕組みの説明を追加）。保存処理は0.1.3と同じ。
 
@@ -12,11 +18,7 @@
 
 ## 0.1.2 - 2026-10-08
 - VCC User Packages向けローカルVPM配布を追加。保存処理は0.1.1と同じ。
-- 公開にあわせてパッケージ名を `com.sou2000sw.basic-autosave` に変更（旧 `com.local.basic-autosave`）。VPMリポジトリ（GitHub Pages）から配布。
-
-# Changelog
-
-All notable changes to the Basic Auto Save package will be documented in this file.
+- 公開にあわせてパッケージ名を `com.sou2000sw.basic-autosave` に変更（旧 `com.local.basic-autosave`）。VPMリポジトリ（GitHub Pages）からの配布は0.1.3から。
 
 ## [0.1.1] - 2026-10-07
 

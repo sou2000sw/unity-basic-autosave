@@ -70,7 +70,22 @@ Play/Compile/Import/Prefab Mode各遷移中の実機操作、大規模プロジ�
 - Play終了の途中で保存処理が走り、`SaveScene` が「This cannot be used during play mode」で失敗していた（30秒後の再試行で保存はされた）。`isPlayingOrWillChangePlaymode` はPlay終了が始まった時点でfalseになるため。`EditorApplication.isPlaying` も見るように修正し、再確認でエラーが出ないことを確認。0.1.2以前からある不具合で、0.1.3の修正で表に出やすくなっていた。
 - 名前なしSceneの警告の絵文字（⚠️）がEditorのフォントになく、四角で表示されフォントの警告ログが出ていた。文字の「注意:」に変更。
 
-**未確認**: 公式VCCでの導入（今回はALCOMのみ）、GitHub Pages経由の導入（公開後）、Unity 6。
+**未確認**: 公式VCCでの導入（今回はALCOMのみ）、GitHub Pages経由の導入（公開後）、Unity 6。（→ 公式VCCとGitHub Pages経由は下の「公開後の確認」で確認済み）
+
+**テスト環境に入っていた主なパッケージ**（`Packages/vpm-manifest.json` より）: VRChat SDK Avatars 3.10.5、Modular Avatar 1.18.7、NDMF 1.15.0-beta.2、Avatar Optimizer 1.9.20。
+
+## 0.1.3 公開後の確認（2026-11-01）
+
+GitHub Pages の `https://sou2000sw.github.io/unity-basic-autosave/index.json` から、上と同じテスト環境に導入した。
+
+| 項目 | 結果 |
+|---|---|
+| ALCOM にリポジトリを追加（表示名「Basic Auto Save」で認識） | 成功 |
+| ALCOM から 0.1.3 を導入、コンパイルエラーなし、設定画面のスタイル適用 | 成功 |
+| 公式 VCC 2.4.2 の Add Repository で URL を読み込み | 成功 |
+| 公式 VCC 2.4.2 の Manage Project に「Basic Auto Save 0.1.3 / Community」と表示 | 成功 |
+
+**未確認**: `vcc://` リンクからの追加（確認したPCでは `vcc://` が ALCOM に関連づけられているため、VCC での動作は試せていない。リンクの形式は VCC 公式どおり）、Unity 6。
 
 ## 0.1.1 修正検証（2026-10-07）
 Unity 2022.3.22f1の専用プロジェクトで9件成功。従来8件に加え、dirtyなインポート済みShaderとAssetImporterが保存失敗として列挙されないことを確認。制作中プロジェクトでの再コンパイル後の自動保存結果は未確認。
