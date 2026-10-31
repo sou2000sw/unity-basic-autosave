@@ -28,3 +28,6 @@ Thumbs.db
 # Python cache
 __pycache__/
 *.pyc
+
+# Local VPM test server output
+LocalVpm~/
