@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -10,6 +11,11 @@ namespace BasicAutoSave
     [InitializeOnLoad]
     public static class BasicAutoSaveService
     {
+        // Static fields are wiped by every domain reload (script compile, entering Play).
+        // The deadline is mirrored in SessionState so the countdown survives reloads;
+        // SessionState itself is cleared when the editor restarts.
+        private const string NextSaveTimeKey = "BasicAutoSave_NextSaveTime";
+
         private static double nextSaveTime;
         private static double retryDelayUntil;
         private static bool isPendingSaveDue;
@@ -24,7 +30,26 @@ namespace BasicAutoSave
             EditorApplication.update += OnUpdate;
             EditorApplication.quitting -= OnQuitting;
             EditorApplication.quitting += OnQuitting;
+            RestoreDeadline();
+        }
+
+        private static void RestoreDeadline()
+        {
+            string stored = SessionState.GetString(NextSaveTimeKey, "");
+            double maxDeadline = EditorApplication.timeSinceStartup + IntervalMinutes * 60.0;
+            if (double.TryParse(stored, NumberStyles.Float, CultureInfo.InvariantCulture, out double deadline) && deadline <= maxDeadline)
+            {
+                // A deadline already in the past makes OnUpdate save as soon as the guards allow
+                nextSaveTime = deadline;
+                return;
+            }
             ResetDeadline();
+        }
+
+        private static void SetNextSaveTime(double time)
+        {
+            nextSaveTime = time;
+            SessionState.SetString(NextSaveTimeKey, time.ToString("R", CultureInfo.InvariantCulture));
         }
 
         private static void OnQuitting()
@@ -62,7 +87,7 @@ namespace BasicAutoSave
 
         public static void ResetDeadline()
         {
-            nextSaveTime = EditorApplication.timeSinceStartup + IntervalMinutes * 60.0;
+            SetNextSaveTime(EditorApplication.timeSinceStartup + IntervalMinutes * 60.0);
             retryDelayUntil = 0;
             isPendingSaveDue = false;
         }
@@ -148,7 +173,7 @@ namespace BasicAutoSave
             else
             {
                 retryDelayUntil = EditorApplication.timeSinceStartup + 30.0;
-                nextSaveTime = retryDelayUntil;
+                SetNextSaveTime(retryDelayUntil);
             }
             return result;
         }
@@ -186,13 +211,13 @@ namespace BasicAutoSave
                 {
                     isPendingSaveDue = false;
                     retryDelayUntil = 0;
-                    nextSaveTime = EditorApplication.timeSinceStartup + IntervalMinutes * 60.0;
+                    SetNextSaveTime(EditorApplication.timeSinceStartup + IntervalMinutes * 60.0);
                     currentStatusMessage = "正常稼働中";
                 }
                 else
                 {
                     retryDelayUntil = EditorApplication.timeSinceStartup + 30.0;
-                    nextSaveTime = EditorApplication.timeSinceStartup + 30.0;
+                    SetNextSaveTime(EditorApplication.timeSinceStartup + 30.0);
                     currentStatusMessage = "保存エラー (30秒後に再試行)";
                 }
             }
@@ -285,23 +310,22 @@ namespace BasicAutoSave
                     return false;
                 }
 
+                // Record the time whenever something was written, even if unnamed scenes were skipped
+                string timestamp = null;
+                if (totalSavedWork > 0)
+                {
+                    timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    SessionState.SetString("BasicAutoSave_LastSaveTime", timestamp);
+                }
+
                 if (skippedUnnamedCount > 0)
                 {
-                    lastPassOutcomeMessage = $"一部スキップ: 未保存の新規シーンが{skippedUnnamedCount}件スキップされました";
+                    string savedPart = timestamp != null ? $"保存完了 ({timestamp})、" : "";
+                    lastPassOutcomeMessage = $"一部スキップ: {savedPart}未保存の新規シーンが{skippedUnnamedCount}件スキップされました";
                     return true;
                 }
 
-                if (totalSavedWork > 0)
-                {
-                    string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                    SessionState.SetString("BasicAutoSave_LastSaveTime", timestamp);
-                    lastPassOutcomeMessage = $"保存完了 ({timestamp})";
-                }
-                else
-                {
-                    lastPassOutcomeMessage = "保存対象なし (変更なし)";
-                }
-
+                lastPassOutcomeMessage = timestamp != null ? $"保存完了 ({timestamp})" : "保存対象なし (変更なし)";
                 return true;
             }
             catch (Exception ex)

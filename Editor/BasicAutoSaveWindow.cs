@@ -68,6 +68,8 @@ namespace BasicAutoSave
 
             intervalField = new IntegerField("保存間隔 (分) [1-30]");
             intervalField.name = "IntervalField";
+            // Apply only on Enter or focus loss, so a half-typed value is not clamped mid-edit
+            intervalField.isDelayed = true;
             intervalField.value = BasicAutoSaveService.IntervalMinutes;
             intervalField.RegisterValueChangedCallback(evt =>
             {
@@ -131,6 +133,13 @@ namespace BasicAutoSave
             statusUpdater = root.schedule.Execute(UpdateStatusUI).Every(500);
         }
 
+        private static bool IsEditing(VisualElement field)
+        {
+            // Focus lands on the field's inner text input, so check descendants too
+            var focused = field.focusController?.focusedElement as VisualElement;
+            return focused != null && (focused == field || field.Contains(focused));
+        }
+
         private void UpdateStatusUI()
         {
             bool isEnabled = BasicAutoSaveService.IsEnabled;
@@ -140,7 +149,8 @@ namespace BasicAutoSave
             {
                 enableToggle.SetValueWithoutNotify(isEnabled);
             }
-            if (intervalField != null)
+            // The 500 ms refresh must not overwrite text the user is still typing
+            if (intervalField != null && !IsEditing(intervalField))
             {
                 intervalField.SetValueWithoutNotify(BasicAutoSaveService.IntervalMinutes);
             }
