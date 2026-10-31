@@ -10,7 +10,7 @@ import sys
 import urllib.request
 
 LISTING_ID = "com.sou2000sw.vpm"
-LISTING_NAME = "sou2000sw"
+LISTING_NAME = "Basic Auto Save"
 AUTHOR = "sou2000sw"
 
 API = os.environ.get("GITHUB_API_URL", "https://api.github.com")
