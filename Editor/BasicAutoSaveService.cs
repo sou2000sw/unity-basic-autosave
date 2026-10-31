@@ -142,7 +142,9 @@ namespace BasicAutoSave
             if (isQuitting) return "エディタ終了中";
             if (EditorApplication.isCompiling) return "コンパイル中";
             if (EditorApplication.isUpdating) return "アセット更新中";
-            if (EditorApplication.isPlayingOrWillChangePlaymode) return "再生中/準備中";
+            // isPlayingOrWillChangePlaymode turns false as soon as exiting Play starts,
+            // while isPlaying stays true until the exit finishes and SaveScene still refuses
+            if (EditorApplication.isPlaying || EditorApplication.isPlayingOrWillChangePlaymode) return "再生中/準備中";
             if (PrefabStageUtility.GetCurrentPrefabStage() != null) return "プレハブ編集モード中";
             if (isSaving) return "保存処理中";
             return null;

@@ -195,7 +195,7 @@ namespace BasicAutoSave
                 List<string> unnamed = BasicAutoSaveService.GetUnnamedDirtyScenes();
                 if (unnamed.Count > 0)
                 {
-                    unnamedScenesLabel.text = $"⚠️ 未保存(名前なし)シーン: {string.Join(", ", unnamed)}\n※保存先が指定されていないため自動保存はスキップされます。";
+                    unnamedScenesLabel.text = $"注意: 未保存(名前なし)シーン: {string.Join(", ", unnamed)}\n※保存先が指定されていないため自動保存はスキップされます。";
                     unnamedScenesLabel.style.display = DisplayStyle.Flex;
                 }
                 else
