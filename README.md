@@ -37,6 +37,18 @@ Package Manager (`Window > Package Manager`) を開き、左上の `+` ボタン
 2. 必要に応じて「保存間隔 (分)」を設定します（1〜30分）。
 3. 「今すぐ保存」ボタンをクリックすると、即座に保存テストを実行できます。
 
+## 仕組み
+Unity 公式の保存 API を、Editor の更新ループで動くタイマーから呼んでいるだけの小さな Editor 拡張です。キー入力の再現（Ctrl+S の送信）や、Unity 内部 API の呼び出しは使っていません。
+
+1. **常駐**: `[InitializeOnLoad]` の静的クラス（`BasicAutoSaveService`）が `EditorApplication.update` に登録され、設定ウィンドウを開いていなくても毎フレーム残り時間を確認します。
+2. **タイマー**: 次の保存時刻を `EditorApplication.timeSinceStartup` 基準で持ちます。スクリプトのコンパイルや Play 開始時のドメインリロードで消えないよう、`SessionState` にも書いておき、リロード後に読み戻します（Unity を再起動するとリセット）。
+3. **待機**: コンパイル中・アセット更新中・Play 中（開始準備中と終了処理中を含む）・Prefab 編集中・終了処理中は保存せず待ちます。待っている間に保存時刻を過ぎていたら、待機が解けた直後に保存します。
+4. **保存**: 読み込まれている保存済みシーンのうち変更のあるものを `EditorSceneManager.SaveScene` で保存し、続けて `AssetDatabase.SaveAssets` でマテリアルなどの変更済みアセットを保存します。名前のない新規シーンはダイアログを出さずに飛ばします。
+5. **結果の確認**: 保存後も変更が残っているアセットがあれば失敗として Console にエラーを出し、30 秒後に再試行します（毎フレームの再試行はしません）。
+6. **設定**: `ScriptableSingleton`（`BasicAutoSaveSettings`）でプロジェクトの `UserSettings/BasicAutoSaveSettings.asset` に保存します。
+
+コードは `Editor/` の 3 ファイル（`BasicAutoSaveService.cs` が保存処理、`BasicAutoSaveSettings.cs` が設定、`BasicAutoSaveWindow.cs` が設定画面）だけで、実行時（ビルド後のアバターやワールド）には何も含まれません。
+
 ## 制限事項・仕様上の注意点
 - **名前なしシーンの扱い**: まだディスクに保存されていない新規シーン（`Untitled Scene` 等）は、保存場所ダイアログを出さずにスキップされ、ステータス画面に未保存シーンとして警告表示されます。
 - **履歴・ロールバック非対応**: 本ツールは標準の上書き保存を行います。過去のバックアップやロールバック機能はありません。
